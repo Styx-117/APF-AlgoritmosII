@@ -7,11 +7,11 @@ import java.sql.SQLException;
 
 public class ConexionDB {
 
-    private static final Dotenv dotenv = dotenv.configure()
+    private static final Dotenv dotenv = Dotenv.configure()
             .ignoreIfMissing()
             .load();
 
-    private static final String URL = process.env.DB_URL;
+    private static final String URL = dotenv.get("DB_URL");
     private static final String USUARIO = dotenv.get("DB_USER");
     private static final String PASSWORD = dotenv.get("DB_PASSWORD");
 
