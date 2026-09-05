@@ -1,4 +1,6 @@
-package academtrack;
+package estructuras;
+
+import model.Alumno;
 
 /**
  * Clase ArbolAVL

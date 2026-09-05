@@ -1,4 +1,4 @@
-package academtrack;
+package model;
 
 /**
  * Clase Trámite

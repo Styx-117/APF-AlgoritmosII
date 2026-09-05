@@ -1,0 +1,194 @@
+-- ============================================
+-- ACADEMTRACK
+-- PostgreSQL
+-- ============================================
+
+-- ============================================
+-- TABLA: ALUMNO
+-- ============================================
+
+CREATE TABLE IF NOT EXISTS alumno (
+    codigo_alumno VARCHAR(10) PRIMARY KEY,
+    dni VARCHAR(8) NOT NULL UNIQUE,
+    nombres VARCHAR(100) NOT NULL,
+    apellidos VARCHAR(100) NOT NULL,
+    carrera VARCHAR(100) NOT NULL,
+    ciclo INTEGER NOT NULL,
+
+    CONSTRAINT chk_alumno_ciclo
+        CHECK (ciclo > 0)
+);
+
+
+-- ============================================
+-- TABLA: CURSO
+-- ============================================
+
+CREATE TABLE IF NOT EXISTS curso (
+    codigo_curso VARCHAR(10) PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    carrera VARCHAR(100) NOT NULL,
+    ciclo INTEGER NOT NULL,
+    horario VARCHAR(100) NOT NULL,
+    capacidad INTEGER NOT NULL,
+
+    CONSTRAINT chk_curso_ciclo
+        CHECK (ciclo > 0),
+
+    CONSTRAINT chk_curso_capacidad
+        CHECK (capacidad > 0)
+);
+
+
+-- ============================================
+-- TABLA: MATRICULA
+-- ============================================
+
+CREATE TABLE IF NOT EXISTS matricula (
+    codigo_matricula VARCHAR(10) PRIMARY KEY,
+    codigo_alumno VARCHAR(10) NOT NULL,
+    fecha DATE NOT NULL,
+    periodo VARCHAR(20) NOT NULL,
+
+    estado VARCHAR(20) NOT NULL
+        DEFAULT 'PENDIENTE',
+
+    CONSTRAINT fk_matricula_alumno
+        FOREIGN KEY (codigo_alumno)
+        REFERENCES alumno(codigo_alumno),
+
+    CONSTRAINT chk_matricula_estado
+        CHECK (
+            estado IN (
+                'PENDIENTE',
+                'CONFIRMADA',
+                'ANULADA'
+            )
+        )
+);
+
+
+-- ============================================
+-- TABLA: DETALLE_MATRICULA
+-- ============================================
+
+CREATE TABLE IF NOT EXISTS detalle_matricula (
+    id_detalle SERIAL PRIMARY KEY,
+    codigo_matricula VARCHAR(10) NOT NULL,
+    codigo_curso VARCHAR(10) NOT NULL,
+
+    CONSTRAINT fk_detalle_matricula
+        FOREIGN KEY (codigo_matricula)
+        REFERENCES matricula(codigo_matricula)
+        ON DELETE CASCADE,
+
+    CONSTRAINT fk_detalle_curso
+        FOREIGN KEY (codigo_curso)
+        REFERENCES curso(codigo_curso),
+
+    CONSTRAINT uq_matricula_curso
+        UNIQUE (codigo_matricula, codigo_curso)
+);
+
+
+-- ============================================
+-- TABLA: TRAMITE
+-- ============================================
+
+CREATE TABLE IF NOT EXISTS tramite (
+    codigo_tramite VARCHAR(10) PRIMARY KEY,
+    codigo_alumno VARCHAR(10) NOT NULL,
+
+    tipo VARCHAR(30) NOT NULL,
+
+    fecha_solicitud DATE NOT NULL,
+    fecha_limite DATE NOT NULL,
+
+    prioridad INTEGER NOT NULL
+        DEFAULT 2,
+
+    estado VARCHAR(20) NOT NULL
+        DEFAULT 'PENDIENTE',
+
+    CONSTRAINT fk_tramite_alumno
+        FOREIGN KEY (codigo_alumno)
+        REFERENCES alumno(codigo_alumno),
+
+    CONSTRAINT chk_tramite_tipo
+        CHECK (
+            tipo IN (
+                'CONSTANCIA',
+                'RETIRO_CURSO',
+                'RECLAMO',
+                'CAMBIO_HORARIO'
+            )
+        ),
+
+    CONSTRAINT chk_tramite_estado
+        CHECK (
+            estado IN (
+                'PENDIENTE',
+                'ATENDIDO'
+            )
+        ),
+
+    CONSTRAINT chk_tramite_prioridad
+        CHECK (
+            prioridad IN (1, 2)
+        )
+);
+
+
+-- ============================================
+-- DATOS DE PRUEBA
+-- ============================================
+
+INSERT INTO alumno
+    (codigo_alumno, dni, nombres, apellidos, carrera, ciclo)
+VALUES
+    ('A001', '76543210', 'Juan', 'Perez', 'Ingenieria de Sistemas', 3);
+
+
+INSERT INTO curso
+    (codigo_curso, nombre, carrera, ciclo, horario, capacidad)
+VALUES
+    ('C001', 'Algoritmos y Estructuras de Datos',
+     'Ingenieria de Sistemas', 3, 'LUN 08:00-10:00', 30),
+
+    ('C002', 'Base de Datos',
+     'Ingenieria de Sistemas', 3, 'MAR 10:00-12:00', 30);
+
+
+INSERT INTO matricula
+    (codigo_matricula, codigo_alumno, fecha, periodo, estado)
+VALUES
+    ('M001', 'A001', '2026-09-04', '2026-II', 'CONFIRMADA');
+
+
+INSERT INTO detalle_matricula
+    (codigo_matricula, codigo_curso)
+VALUES
+    ('M001', 'C001'),
+    ('M001', 'C002');
+
+
+INSERT INTO tramite
+    (
+        codigo_tramite,
+        codigo_alumno,
+        tipo,
+        fecha_solicitud,
+        fecha_limite,
+        prioridad,
+        estado
+    )
+VALUES
+    (
+        'T001',
+        'A001',
+        'CONSTANCIA',
+        '2026-09-04',
+        '2026-09-06',
+        1,
+        'PENDIENTE'
+    );

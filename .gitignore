@@ -1,0 +1,11 @@
+# Credenciales
+.env
+
+# NetBeans
+/nbproject/private/
+/build/
+/dist/
+/.nb-gradle/
+
+# Archivos compilados
+*.class

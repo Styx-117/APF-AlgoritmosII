@@ -1,4 +1,9 @@
-package academtrack;
+
+
+import model.Alumno;
+import model.Curso;
+import model.Matricula;
+import model.Tramite;
 
 /**
  * Clase Main

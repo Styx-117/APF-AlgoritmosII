@@ -1,4 +1,4 @@
-package academtrack;
+package estructuras;
 
 /**
  * Clase Pila

@@ -1,4 +1,6 @@
-package academtrack;
+package estructuras;
+
+import model.Tramite;
 
 /**
  * Clase ColaPrioridad
