@@ -199,4 +199,12 @@ public class Matricula {
         if (i < 0 || i >= cantidadDetalles) return null;
         return detalles[i];
     }
+
+    //Set necesario
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    
 }

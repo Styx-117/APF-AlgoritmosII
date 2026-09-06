@@ -1,37 +1,45 @@
 package dao;
 
-import model.Curso;
-import model.Matricula;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.Curso;
+import model.DetalleMatricula;
+import model.Matricula;
+
 public class MatriculaDAO {
 
-    // REGISTRAR MATRÍCULA + CURSOS
+    // ==========================================
+    // REGISTRAR MATRÍCULA + DETALLES
+    // ==========================================
     public boolean registrar(Matricula matricula) {
 
         String sqlMatricula =
-                "INSERT INTO matricula "
-                        + "(codigo_matricula, codigo_alumno, fecha, periodo, estado) "
-                        + "VALUES (?, ?, ?, ?, ?)";
+                "INSERT INTO matricula " +
+                "(codigo_matricula, codigo_alumno, fecha, periodo, estado) " +
+                "VALUES (?, ?, ?, ?, ?)";
 
         String sqlDetalle =
-                "INSERT INTO detalle_matricula "
-                        + "(codigo_matricula, codigo_curso) "
-                        + "VALUES (?, ?)";
+                "INSERT INTO detalle_matricula " +
+                "(codigo_matricula, codigo_curso) " +
+                "VALUES (?, ?)";
 
         Connection con = null;
 
         try {
             con = ConexionDB.conectar();
 
-            // Iniciamos transacción
+            // Iniciar transacción
             con.setAutoCommit(false);
 
-
-            // Registrar matrícula
+            // ------------------------------------------
+            // 1. Registrar matrícula
+            // ------------------------------------------
             try (PreparedStatement ps = con.prepareStatement(sqlMatricula)) {
 
                 ps.setString(1, matricula.getCodigoMatricula());
@@ -43,48 +51,50 @@ public class MatriculaDAO {
                 ps.executeUpdate();
             }
 
-
-            // Registramos los cursos de la matricula
+            // ------------------------------------------
+            // 2. Registrar detalles de matrícula
+            // ------------------------------------------
             try (PreparedStatement ps = con.prepareStatement(sqlDetalle)) {
 
-                for (Curso curso : matricula.getCursosMatriculados()) {
+                for (int i = 0; i < matricula.getCantidadDetalles(); i++) {
 
-                    ps.setString(
-                            1,
-                            matricula.getCodigoMatricula()
-                    );
+                    DetalleMatricula detalle = matricula.obtenerDetalle(i);
 
-                    ps.setString(
-                            2,
-                            curso.getCodigoCurso()
-                    );
+                    if (detalle == null) {
+                        continue;
+                    }
+
+                    ps.setString(1, matricula.getCodigoMatricula());
+                    ps.setString(2, detalle.getCodigoCurso());
 
                     ps.executeUpdate();
                 }
             }
 
-
-            // Confirmamos_todo
+            // Confirmar transacción
             con.commit();
+
             return true;
 
         } catch (SQLException e) {
 
-            // Hacemos Rollback si sucede un error e imprimimos la razon de este
+            // ------------------------------------------
+            // Rollback
+            // ------------------------------------------
             if (con != null) {
                 try {
                     con.rollback();
                 } catch (SQLException ex) {
                     System.out.println(
                             "Error al realizar rollback: "
-                                    + ex.getMessage()
+                            + ex.getMessage()
                     );
                 }
             }
 
             System.out.println(
                     "Error al registrar matricula: "
-                            + e.getMessage()
+                    + e.getMessage()
             );
 
             return false;
@@ -98,7 +108,7 @@ public class MatriculaDAO {
                 } catch (SQLException e) {
                     System.out.println(
                             "Error al cerrar conexión: "
-                                    + e.getMessage()
+                            + e.getMessage()
                     );
                 }
             }
@@ -106,21 +116,22 @@ public class MatriculaDAO {
     }
 
 
-
+    // ==========================================
     // CONSULTAR MATRÍCULA
+    // ==========================================
     public Matricula consultar(String codigoMatricula) {
 
         String sqlMatricula =
-                "SELECT * FROM matricula "
-                        + "WHERE codigo_matricula = ?";
+                "SELECT * FROM matricula " +
+                "WHERE codigo_matricula = ?";
 
         String sqlCursos =
-                "SELECT c.* "
-                        + "FROM curso c "
-                        + "INNER JOIN detalle_matricula d "
-                        + "ON c.codigo_curso = d.codigo_curso "
-                        + "WHERE d.codigo_matricula = ? "
-                        + "ORDER BY c.codigo_curso";
+                "SELECT c.* " +
+                "FROM curso c " +
+                "INNER JOIN detalle_matricula d " +
+                "ON c.codigo_curso = d.codigo_curso " +
+                "WHERE d.codigo_matricula = ? " +
+                "ORDER BY c.codigo_curso";
 
         try (Connection con = ConexionDB.conectar();
              PreparedStatement psMatricula =
@@ -128,8 +139,9 @@ public class MatriculaDAO {
              PreparedStatement psCursos =
                      con.prepareStatement(sqlCursos)) {
 
-
+            // ------------------------------------------
             // 1. Obtener matrícula
+            // ------------------------------------------
             psMatricula.setString(1, codigoMatricula);
 
             try (ResultSet rs = psMatricula.executeQuery()) {
@@ -138,16 +150,17 @@ public class MatriculaDAO {
                     return null;
                 }
 
+                // El nuevo constructor tiene 4 parámetros
                 Matricula matricula = new Matricula(
                         rs.getString("codigo_matricula"),
                         rs.getString("codigo_alumno"),
                         rs.getDate("fecha").toString(),
-                        rs.getString("periodo"),
-                        rs.getString("estado")
+                        rs.getString("periodo")
                 );
 
-
-                // 2. Obtener sus cursos
+                // ------------------------------------------
+                // 2. Obtener cursos
+                // ------------------------------------------
                 psCursos.setString(1, codigoMatricula);
 
                 try (ResultSet rsCursos =
@@ -175,7 +188,7 @@ public class MatriculaDAO {
 
             System.out.println(
                     "Error al consultar matricula: "
-                            + e.getMessage()
+                    + e.getMessage()
             );
         }
 
@@ -191,9 +204,9 @@ public class MatriculaDAO {
         List<Matricula> matriculas = new ArrayList<>();
 
         String sql =
-                "SELECT codigo_matricula "
-                        + "FROM matricula "
-                        + "ORDER BY codigo_matricula";
+                "SELECT codigo_matricula " +
+                "FROM matricula " +
+                "ORDER BY codigo_matricula";
 
         try (Connection con = ConexionDB.conectar();
              PreparedStatement ps = con.prepareStatement(sql);
@@ -213,7 +226,7 @@ public class MatriculaDAO {
 
             System.out.println(
                     "Error al listar matriculas: "
-                            + e.getMessage()
+                    + e.getMessage()
             );
         }
 
@@ -227,12 +240,12 @@ public class MatriculaDAO {
     public boolean actualizar(Matricula matricula) {
 
         String sql =
-                "UPDATE matricula SET "
-                        + "codigo_alumno = ?, "
-                        + "fecha = ?, "
-                        + "periodo = ?, "
-                        + "estado = ? "
-                        + "WHERE codigo_matricula = ?";
+                "UPDATE matricula SET " +
+                "codigo_alumno = ?, " +
+                "fecha = ?, " +
+                "periodo = ?, " +
+                "estado = ? " +
+                "WHERE codigo_matricula = ?";
 
         try (Connection con = ConexionDB.conectar();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -256,7 +269,7 @@ public class MatriculaDAO {
 
             System.out.println(
                     "Error al actualizar matricula: "
-                            + e.getMessage()
+                    + e.getMessage()
             );
 
             return false;
@@ -270,8 +283,8 @@ public class MatriculaDAO {
     public boolean eliminar(String codigoMatricula) {
 
         String sql =
-                "DELETE FROM matricula "
-                        + "WHERE codigo_matricula = ?";
+                "DELETE FROM matricula " +
+                "WHERE codigo_matricula = ?";
 
         try (Connection con = ConexionDB.conectar();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -286,7 +299,7 @@ public class MatriculaDAO {
 
             System.out.println(
                     "Error al eliminar matricula: "
-                            + e.getMessage()
+                    + e.getMessage()
             );
 
             return false;
