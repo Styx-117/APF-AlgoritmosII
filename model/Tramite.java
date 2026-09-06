@@ -57,6 +57,15 @@ public class Tramite {
     public int getPrioridad() { return prioridad; }
     public String getEstado() { return estado; }
 
+    //Setters
+    public void setPrioridad(int prioridad) {
+        this.prioridad = prioridad;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
     @Override
     public String toString() {
         return codigoTramite + " | " + tipo + " | prioridad=" + prioridad + " | " + estado;

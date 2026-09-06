@@ -22,12 +22,12 @@ public class Matricula {
     private String estado; // PENDIENTE, CONFIRMADA, ANULADA
     private List<Curso> cursosMatriculados;
 
-    public Matricula(String codigoMatricula, String codigoAlumno, String fecha, String periodo) {
+    public Matricula(String codigoMatricula, String codigoAlumno, String fecha, String periodo, String estado) {
         this.codigoMatricula = codigoMatricula;
         this.codigoAlumno = codigoAlumno;
         this.fecha = fecha;
         this.periodo = periodo;
-        this.estado = "PENDIENTE";
+        this.estado = estado;
         this.cursosMatriculados = new ArrayList<>();
     }
 
@@ -75,4 +75,8 @@ public class Matricula {
     public String getPeriodo() { return periodo; }
     public String getEstado() { return estado; }
     public List<Curso> getCursosMatriculados() { return cursosMatriculados; }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
 }

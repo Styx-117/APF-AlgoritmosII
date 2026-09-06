@@ -1,55 +1,82 @@
 
-
-import dao.AlumnoDAO;
-import model.Alumno;
+import dao.MatriculaDAO;
+import model.Curso;
+import model.Matricula;
 
 public class maintest {
 
     public static void main(String[] args) {
 
-        AlumnoDAO alumnoDAO = new AlumnoDAO();
+        MatriculaDAO matriculaDAO = new MatriculaDAO();
 
-        Alumno alumno = new Alumno(
-                "A002",
-                "12345678",
-                "Maria",
-                "Gomez",
+        Curso curso1 = new Curso(
+                "C001",
+                "Algoritmos y Estructuras de Datos",
                 "Ingenieria de Sistemas",
-                3
+                3,
+                "LUN 08:00-10:00",
+                30
         );
 
+        Curso curso2 = new Curso(
+                "C002",
+                "Base de Datos",
+                "Ingenieria de Sistemas",
+                3,
+                "MAR 10:00-12:00",
+                30
+        );
+
+        Matricula matricula = new Matricula(
+                "M002",
+                "A002",
+                "2026-09-05",
+                "2026-II",
+                "PENDIENTE"
+        );
+
+        matricula.agregarCurso(curso1);
+        matricula.agregarCurso(curso2);
+
         // Registrar
-        if (alumnoDAO.registrar(alumno)) {
-            System.out.println("Alumno registrado correctamente.");
+        if (matriculaDAO.registrar(matricula)) {
+            System.out.println(
+                    "Matricula registrada correctamente."
+            );
         }
 
         // Consultar
-        Alumno encontrado = alumnoDAO.consultar("A002");
+        Matricula encontrada =
+                matriculaDAO.consultar("M002");
 
-        if (encontrado != null) {
-            System.out.println("Alumno encontrado:");
-            System.out.println(encontrado);
+        if (encontrada != null) {
+
+            System.out.println("\nMatricula encontrada:");
+            System.out.println(encontrada);
+
+            System.out.println("Cursos:");
+
+            for (Curso curso :
+                    encontrada.getCursosMatriculados()) {
+
+                System.out.println(curso);
+            }
         }
 
         // Actualizar
-        alumno.setCiclo(4);
+        matricula.setEstado("CONFIRMADA");
 
-        if (alumnoDAO.actualizar(alumno)) {
-            System.out.println("Alumno actualizado.");
+        if (matriculaDAO.actualizar(matricula)) {
+            System.out.println(
+                    "\nMatricula actualizada."
+            );
         }
 
         // Listar
-        System.out.println("\nLista de alumnos:");
+        System.out.println("\nLista de matriculas:");
 
-        for (Alumno a : alumnoDAO.listar()) {
-            System.out.println(a);
+        for (Matricula m : matriculaDAO.listar()) {
+            System.out.println(m);
         }
-
-        // Eliminar
-        /*
-        if (alumnoDAO.eliminar("A002")) {
-            System.out.println("Alumno eliminado.");
-        }
-        */
     }
 }

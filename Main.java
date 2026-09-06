@@ -38,7 +38,7 @@ public class Main {
         System.out.println();
 
         // Matricular al alumno en los cursos (sin cruce de horario)
-        Matricula matricula = new Matricula("M001", alumno.getCodigoAlumno(), "2026-09-04", "2026-II");
+        Matricula matricula = new Matricula("M001", alumno.getCodigoAlumno(), "2026-09-04", "2026-II", "Confirmada");
         matricula.agregarCurso(curso1);
         matricula.agregarCurso(curso2);
         matricula.registrar();
