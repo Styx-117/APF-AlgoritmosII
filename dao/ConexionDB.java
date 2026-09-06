@@ -19,7 +19,7 @@ public class ConexionDB {
 
         if (URL == null || USUARIO == null || PASSWORD == null) {
             throw new SQLException(
-                "No se encontraron las variables de conexión de la base de datos."
+                    "No se encontraron las variables de conexión."
             );
         }
 

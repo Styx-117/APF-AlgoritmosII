@@ -1,5 +1,6 @@
 
 
+import dao.ConexionDB;
 import model.Alumno;
 import model.Curso;
 import model.Matricula;
@@ -51,5 +52,6 @@ public class Main {
         tramite.registrar();
         tramite.asignarPrioridad(1); // urgente
         tramite.consultar();
+
     }
 }
