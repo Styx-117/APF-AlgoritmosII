@@ -15,8 +15,8 @@ public class testMatriculaDAO {
         // 1. Crear matrícula
         // ==========================================
         Matricula matricula = new Matricula(
-                "MAT-TEST-001",
-                "ALU001",
+                "M003",
+                "A001",
                 "2026-09-06",
                 "2026-II"
         );
@@ -25,7 +25,7 @@ public class testMatriculaDAO {
         // 2. Crear cursos
         // ==========================================
         Curso curso1 = new Curso(
-                "CUR001",
+                "C001",
                 "Algoritmos y Estructuras de Datos",
                 "Ingeniería de Sistemas",
                 3,
@@ -34,7 +34,7 @@ public class testMatriculaDAO {
         );
 
         Curso curso2 = new Curso(
-                "CUR002",
+                "C002",
                 "Base de Datos II",
                 "Ingeniería de Sistemas",
                 4,
@@ -76,8 +76,8 @@ public class testMatriculaDAO {
 
         System.out.println(
                 registrado
-                ? "✓ Matrícula registrada correctamente"
-                : "✗ Error al registrar matrícula"
+                ? "Matrícula registrada correctamente"
+                : "Error al registrar matrícula"
         );
 
         // ==========================================
@@ -86,11 +86,11 @@ public class testMatriculaDAO {
         System.out.println("\n=== CONSULTANDO ===");
 
         Matricula encontrada =
-                dao.consultar("MAT-TEST-001");
+                dao.consultar("M003");
 
         if (encontrada != null) {
 
-            System.out.println("✓ Matrícula encontrada");
+            System.out.println("Matrícula encontrada");
             System.out.println(
                     "Código: "
                     + encontrada.getCodigoMatricula()
