@@ -1,11 +1,5 @@
--- ============================================
--- ACADEMTRACK
--- PostgreSQL
--- ============================================
 
--- ============================================
 -- TABLA: ALUMNO
--- ============================================
 
 CREATE TABLE IF NOT EXISTS alumno (
     codigo_alumno VARCHAR(10) PRIMARY KEY,
@@ -20,9 +14,8 @@ CREATE TABLE IF NOT EXISTS alumno (
 );
 
 
--- ============================================
+
 -- TABLA: CURSO
--- ============================================
 
 CREATE TABLE IF NOT EXISTS curso (
     codigo_curso VARCHAR(10) PRIMARY KEY,
@@ -40,9 +33,8 @@ CREATE TABLE IF NOT EXISTS curso (
 );
 
 
--- ============================================
+
 -- TABLA: MATRICULA
--- ============================================
 
 CREATE TABLE IF NOT EXISTS matricula (
     codigo_matricula VARCHAR(10) PRIMARY KEY,
@@ -68,9 +60,8 @@ CREATE TABLE IF NOT EXISTS matricula (
 );
 
 
--- ============================================
+
 -- TABLA: DETALLE_MATRICULA
--- ============================================
 
 CREATE TABLE IF NOT EXISTS detalle_matricula (
     id_detalle SERIAL PRIMARY KEY,
@@ -91,9 +82,8 @@ CREATE TABLE IF NOT EXISTS detalle_matricula (
 );
 
 
--- ============================================
+
 -- TABLA: TRAMITE
--- ============================================
 
 CREATE TABLE IF NOT EXISTS tramite (
     codigo_tramite VARCHAR(10) PRIMARY KEY,
@@ -139,9 +129,8 @@ CREATE TABLE IF NOT EXISTS tramite (
 );
 
 
--- ============================================
+
 -- DATOS DE PRUEBA
--- ============================================
 
 INSERT INTO alumno
     (codigo_alumno, dni, nombres, apellidos, carrera, ciclo)
