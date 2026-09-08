@@ -8,12 +8,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 
-/**
- * Panel de interfaz gráfica para el CRUD de Trámites académicos.
- * RF07. Registrar solicitudes de trámites académicos.
- * RF08. Consultar trámites mediante su código.
- * RF09. Gestionar los trámites según su nivel de prioridad.
- */
+
 public class PanelTramite extends JPanel {
 
     private final TramiteDAO tramiteDAO = new TramiteDAO();
