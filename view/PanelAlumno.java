@@ -8,12 +8,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 
-/**
- * Panel de interfaz gráfica para el CRUD de Alumnos.
- * RF01. Registrar alumnos.
- * RF02. Consultar alumnos mediante su código.
- * RF03. Actualizar los datos de los alumnos.
- */
+
 public class PanelAlumno extends JPanel {
 
     private final AlumnoDAO alumnoDAO = new AlumnoDAO();
