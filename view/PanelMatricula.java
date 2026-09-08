@@ -11,15 +11,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 
-/**
- * Panel de interfaz gráfica para gestionar la Matrícula.
- * Aquí se demuestran en vivo las dos estructuras estáticas del Capítulo 4:
- *  - Arreglo unidimensional: Matricula.detalles (DetalleMatricula[])
- *  - Arreglo bidimensional: MatrizCruceHorarios, usado dentro de Matricula.validar()
- *
- * RF05. Registrar la matrícula de los alumnos en los cursos seleccionados.
- * RF06. Validar la matrícula para evitar duplicidad y cruces de horario.
- */
+
 public class PanelMatricula extends JPanel {
 
     private final CursoDAO cursoDAO = new CursoDAO();
@@ -55,9 +47,7 @@ public class PanelMatricula extends JPanel {
         listarMatriculas();
     }
 
-    // ==========================================================
-    // PANEL SUPERIOR: datos de la matrícula + arreglo 1D de cursos
-    // ==========================================================
+
     private JPanel construirPanelSuperior() {
         JPanel panel = new JPanel(new BorderLayout(5, 5));
 
@@ -132,9 +122,6 @@ public class PanelMatricula extends JPanel {
         return panel;
     }
 
-    // ==========================================================
-    // PANEL INFERIOR: listado de matrículas ya registradas en BD
-    // ==========================================================
     private JPanel construirPanelListado() {
         JPanel panel = new JPanel(new BorderLayout(5, 5));
         panel.setBorder(BorderFactory.createTitledBorder("Matrículas registradas"));
@@ -157,10 +144,7 @@ public class PanelMatricula extends JPanel {
         return panel;
     }
 
-    // ==========================================================
-    // ACCIONES
-    // ==========================================================
-
+   
     private void nuevaMatricula() {
         matriculaActual = null;
         txtCodigoMatricula.setText("");
@@ -253,9 +237,7 @@ public class PanelMatricula extends JPanel {
             return;
         }
 
-        // Aquí se ejecuta Matricula.validar(), que internamente arma la
-        // MatrizCruceHorarios (arreglo bidimensional) para revisar cruces
-        // de horario y duplicidad de cursos (RF06).
+       
         matriculaActual.confirmar();
         lblEstado.setText(matriculaActual.getEstado());
 
