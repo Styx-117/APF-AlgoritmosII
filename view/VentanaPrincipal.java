@@ -2,13 +2,7 @@ package view;
 
 import javax.swing.*;
 
-/**
- * Ventana principal de AcademTrack.
- * Interfaz gráfica inicial del sistema (Avance 1): permite registrar,
- * consultar, actualizar y eliminar Alumnos, Cursos, Matrículas y Trámites,
- * mostrando en pantalla la validación de duplicidad y cruce de horario
- * (arreglo bidimensional MatrizCruceHorarios) al confirmar una matrícula.
- */
+
 public class VentanaPrincipal extends JFrame {
 
     public VentanaPrincipal() {
@@ -27,7 +21,7 @@ public class VentanaPrincipal extends JFrame {
     }
 
     public static void main(String[] args) {
-        // Se ejecuta en el hilo de eventos de Swing (buena práctica en GUI)
+      
         SwingUtilities.invokeLater(() -> {
             VentanaPrincipal ventana = new VentanaPrincipal();
             ventana.setVisible(true);
