@@ -8,10 +8,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 
-/**
- * Panel de interfaz gráfica para el CRUD de Cursos.
- * RF04. Registrar cursos según carrera y ciclo.
- */
+
 public class PanelCurso extends JPanel {
 
     private final CursoDAO cursoDAO = new CursoDAO();
